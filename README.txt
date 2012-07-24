@@ -1,11 +1,40 @@
-Make sure you have selected:
+
+CONTENTS OF THIS FILE
+---------------------
+
+ * Introduction
+ * Installation
+ * Configuration
+ * Multilangual sites
+
+
+INTRODUCTION
+------------
+
+Let users register with a password on the registration form when verification mail is required.
+
+By default, users can create accounts directly on the registration form, set their password and
+be immediately logged in, or they can create their account, wait for a verification e-mail, and
+then create their password. With this module, users are able to create their account along with
+their password and simply activate their account when receiving the verification email.
+
+
+INSTALLATION
+------------
+
+Installation is like any other module, just place the files in the
+sites/all/modules directory and enable the module on the modules page.
+
+
+CONFIGURATION
+-------------
+
+On the admin/config/people/accounts page make sure you have selected:
 
 Who can register accounts?
 0 Administrators only
 X Visitors
 0 Visitors, but administrator approval is required
-
-At admin/config/people/accounts.
 
 Then select 'Require a verification e-mail, but let users set their password directly on the registration form.' at:
 
@@ -58,3 +87,18 @@ You may now log in by surfing to [site:login-url] with the username and password
 
 That's all! The module is now configured correctly.
 
+
+MULTILANGUAL SITES
+------------------
+
+For multilangual sites: i18n / variables are supported for the e-mail template.
+Be sure to enable them at the admin/config/regional/i18n/variable page and to
+translate them via the admin/config/regional/translate page.
+
+Ones configured correctly, users will receive an e-mail in their default
+language, setting available on user's edit page. It does not matter what the
+site language is, this setting will be leading and overwrite the site's default
+language. So it is logical and corrent that if you have an German based site
+with, let's say German and English languages enabled, and German is also the
+site's default language, still when users have English as their default
+language, they will receive an English e-mail.
