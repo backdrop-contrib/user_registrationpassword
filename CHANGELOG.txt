@@ -1,3 +1,8 @@
+User Registration Password 7.x-1.x-dev 2012-11-05
+---------------------------------------------
+- Fixed wrong tokens in e-mail acivation template - http://drupal.org/node/1832002
+- Fixed missing token on configuration page - http://drupal.org/node/1831922
+
 User Registration Password 7.x-1.3 2012-09-12
 ---------------------------------------------
 - Feature request: Translatable Confirmation E-Mail - By kle - http://drupal.org/node/1321998
