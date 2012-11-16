@@ -1,7 +1,24 @@
 User Registration Password 7.x-1.x-dev 2012-11-05
 ---------------------------------------------
-- Fixed wrong tokens in e-mail acivation template - http://drupal.org/node/1832002
-- Fixed missing token on configuration page - http://drupal.org/node/1831922
+- Bug: Fixed wrong tokens in e-mail acivation template - http://drupal.org/node/1832002
+- Bug: Fixed missing token on configuration page - http://drupal.org/node/1831922
+
+- Task: Added tests. (admin config page test still needs work)
+- Task: Codingstandards++ (almost done).
+- Task: In-code documentation++ (still needs some work).
+
+- CODE CHANGES: Changed logic a bit, be sure to review the changes if you develop on top of our module.
+ * Added hook_user_presave() and set the login to time() on registration.
+ * Added account->access and replaced account->login in the db queries with account->access. This makes the password reset just as secure and random as core again.
+ * All static variables 'values' have changed.
+ * Moved everything in user_registrationpassword_form_user_register_submit() function into the if() statement.
+ * Created a new function: user_registrationpassword_set_message() to drupal_set_message() and redirect.
+ * Did a lot of work to fix possible privacy issues.
+
+
+TODO:
+>>>> Need to write update function for variables. They all have changed. Big chance it won't work without resaving the admin config form until that's done.
+
 
 User Registration Password 7.x-1.3 2012-09-12
 ---------------------------------------------
