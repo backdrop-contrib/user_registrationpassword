@@ -147,6 +147,14 @@ for any other module via the admin/modules page.
 UPGRADE NOTES
 -------------
 
+1.3 - 1.4
+
+You need to run update.php to fix the variable name we changed.
+Visit admin/reports/status and click on the update database link
+or update.php direct from your browser.
+
+1.0 - 1.3
+
 In earlier versions, this module did not override the default 'Account
 activation' e-mail template. To prevent questions and keep in line with the
 level of information we would like to offer with this module, we provide the
