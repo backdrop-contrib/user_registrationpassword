@@ -1,5 +1,11 @@
-User Registration Password 7.x-1.x-dev 2013-01-17
+User Registration Password 7.x-1.x-dev 2013-01-18
 ---------------------------------------------
+
+  Migrated functionality from user_registrationpass_extra:
+- New: Password reset form flood control + privacy.
+- New: Settings for flood control via flood_control module.
+- New: Resend password confirmation mail from admin/users.
+
 - Bug: Fixed wrong tokens in e-mail activation template
   http://drupal.org/node/1832002
 - Bug: Fixed missing token on configuration page
@@ -28,6 +34,7 @@ User Registration Password 7.x-1.x-dev 2013-01-17
    to drupal_set_message() and redirect.
  * Did a lot of work to fix possible privacy issues.
 
+   You need to run update.php.
 
 TODO:
 - Finish tests.
