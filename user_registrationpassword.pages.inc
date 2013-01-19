@@ -73,16 +73,10 @@ function user_registrationpassword_confirm_account($form, &$form_state, $uid, $t
           if (!empty($order_id)) {
             drupal_goto('checkout/' . $order_id);
           }
-          else {
-            // Else we just redirect to /user for normal people signing up
-            // to the site. We do not want to forward them to checkout.
-            drupal_goto('user');
-          }
         }
-        else {
-          // And just redirect to /user if this site does not have commerce.
-          drupal_goto('user');
-        }
+        // And just redirect to /user if this site does not have commerce,
+        // or if the user does not have an order in the cart.
+        drupal_goto('user');
       }
       else {
         user_registrationpassword_set_message('linkerror');
