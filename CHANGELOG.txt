@@ -5,6 +5,7 @@ User Registration Password 7.x-1.x-dev 2013-01-18
 - New: Password reset form flood control + privacy.
 - New: Settings for flood control via flood_control module.
 - New: Resend password confirmation mail from admin/users.
+- New: Added support for the rpt module.
 
 - Bug: Fixed wrong tokens in e-mail activation template
   http://drupal.org/node/1832002
