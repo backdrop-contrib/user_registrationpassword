@@ -1,4 +1,4 @@
-User Registration Password 7.x-1.x-dev 2013-01-18
+User Registration Password 7.x-1.4-rc1 2013-04-05
 ---------------------------------------------
 
   Migrated functionality from user_registrationpass_extra:
@@ -37,7 +37,9 @@ User Registration Password 7.x-1.x-dev 2013-01-18
    to drupal_set_message() and redirect.
  * Did a lot of work to fix possible privacy issues.
 
-   You need to run update.php.
+
+   >>> You need to run update.php after updating the module files. <<<
+
 
 TODO:
 - Finish tests.
