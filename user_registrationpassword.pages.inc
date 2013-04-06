@@ -22,7 +22,12 @@ function user_registrationpassword_confirm_account($form, &$form_state, $uid, $t
     else {
       $reset_link_account = user_load($uid);
       if (!empty($reset_link_account)) {
-        drupal_set_message(t('Another user (%other_user) is already logged into the site on this computer, but you tried to use a one-time link for user %resetting_user.', array('%other_user' => $user->name, '%resetting_user' => $reset_link_account->name)) . ' ' . t('Please !logout and try using the link again.', array('!logout' => l('logout', 'logout'))));
+        if (variable_get('user_registrationpassword_privacy', TRUE)) {
+          drupal_set_message(t('%other_user is currently authenticated to the site, but you tried to use a one-time link for another user.', array('%other_user' => $user->name)) . ' ' . t('Please !logout and try using the link again.', array('!logout' => l('logout', 'logout'))));
+        }
+        else {
+          drupal_set_message(t('Another user (%other_user) is already authenticated to the site, but you tried to use a one-time link for user %resetting_user.', array('%other_user' => $user->name, '%resetting_user' => $reset_link_account->name)) . ' ' . t('Please !logout and try using the link again.', array('!logout' => l('logout', 'logout'))));
+        }
       }
       else {
         // Invalid one-time link specifies an unknown user.
