@@ -44,7 +44,7 @@ function user_registrationpassword_confirm_account($form, &$form_state, $uid, $t
 
     // Timestamp can not be larger then current.
     if ($timestamp_created <= $current && $account = reset($users)) {
-      // Check if we have to enforce experation for activation links.
+      // Check if we have to enforce expiration for activation links.
       if (variable_get('user_registrationpassword_registration_ftll_expire', FALSE) && !$account->login && $current - $timestamp > $timeout) {
         user_registrationpassword_set_message('linkerror', TRUE);
       }
