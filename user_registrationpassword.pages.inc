@@ -74,7 +74,7 @@ function user_registrationpassword_confirm_account($form, &$form_state, $uid, $t
         }
 
         // Test for Commerce checkout and redirect to checkout if exists.
-        if (module_exists('commerce_checkout')) {
+        if (module_exists('commerce_checkout_redirect') && module_exists('commerce_cart')) {
           $order_id = commerce_cart_order_id();
           // People need to be coming from the checkout form, and thus
           // have an order ready, so we will forward them to the checkout
