@@ -67,6 +67,10 @@ function user_registrationpassword_confirm_account($form, &$form_state, $uid, $t
         // user, which invalidates further use of the one-time login link.
         user_login_finalize();
 
+        // Invoke user_registrationpassword_user_activated so other modules can
+        // respond to the user activation.
+        module_invoke_all('user_registrationpassword_activated_user', $account);
+
         // Trigger a rules event.
         // @see http://drupal.org/node/1776286
         if (module_exists('rules')) {
