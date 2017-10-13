@@ -20,6 +20,7 @@ function user_registrationpassword_rules_event_info() {
         ),
       ),
       'group' => 'User',
+      'access callback' => 'rules_user_integration_access',
     ),
   );
 }
