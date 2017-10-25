@@ -8,8 +8,6 @@ CONTENTS OF THIS FILE
  * E-mail templates
  * Multilangual sites
  * Known issues
- * Password reset support
- * Resend confirmation mail
  * De-installation
  * Upgrade notes
 
@@ -135,26 +133,6 @@ description of the problem here:
 http://drupal.org/node/add/project-issue/user_registrationpassword
 
 
-PASSWORD RESET SUPPORT
-----------------------
-
-Password reset support includes 2 goals:
-- Provide a privacy-save form.
-- Limit floods.
-
-This is currently not fixed in core, so we implemented it as a temporary fix.
-
-The flood_control module can be used to tweak settings.
-
-
-RESEND CONFIRMATION MAIL
-------------------------
-
-We have implemented a new action via hook_user_operations()
-called: 'resend confirmation mail'. This enabled administrators
-to re-send confirmation e-mails to users from the admin users page.
-
-
 DE-INSTALLATION
 ---------------
 
@@ -178,6 +156,15 @@ for any other module via the admin/modules page.
 
 UPGRADE NOTES
 -------------
+
+1.4 - 1.5
+
+Due to some code changes the registry is cleared in an update hook. It might
+also be required to clear the caches on your site, please test to make sure.
+
+The Drupal coding standards issues have been fixed, all code now validates. This
+includes renaming of all named constants, so we advice a review of your code if
+you use these in any place in your custom code.
 
 1.3 - 1.4
 
