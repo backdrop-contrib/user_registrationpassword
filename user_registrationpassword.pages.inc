@@ -69,45 +69,50 @@ function user_registrationpassword_confirm_account($form, &$form_state, $uid, $t
         // Format the date, so the logs are a bit more readable.
         $date = format_date($timestamp);
         watchdog('user', 'User %name used one-time login link at time %timestamp.', array('%name' => $account->name, '%timestamp' => $date));
+
         // Activate the user and update the access and login time to $current.
-        $account = user_save($account, array(
-          'status' => 1,
-          'access' => $current,
-          'login' => $current,
-        ));
-        // Set the new user.
-        $user = $account;
-        // user_login_finalize() also updates the login timestamp of the
-        // user, which invalidates further use of the one-time login link.
-        user_login_finalize();
+        $account->status = 1;
+        $account->access = $current;
+        $account->login = $current;
+        if (user_save($account)) {
 
-        // Invoke user_registrationpassword_user_activated so other modules can
-        // respond to the user activation.
-        module_invoke_all('user_registrationpassword_activated_user', $account);
+          // Reload the user account.
+          $reloaded_account = user_load($account->uid, TRUE);
 
-        // Trigger a rules event.
-        // @see http://drupal.org/node/1776286
-        if (module_exists('rules')) {
-          rules_invoke_event('user_registrationpassword_activated', $account);
-        }
+          // Set the new user.
+          $user = $reloaded_account;
+          // user_login_finalize() also updates the login timestamp of the
+          // user, which invalidates further use of the one-time login link.
+          user_login_finalize();
 
-        // Test for Commerce checkout and redirect to checkout if exists.
-        if (module_exists('commerce_checkout_redirect') && module_exists('commerce_cart')) {
-          $order_id = commerce_cart_order_id();
-          // People need to be coming from the checkout form, and thus
-          // have an order ready, so we will forward them to the checkout
-          // form if they have an cart order set.
-          if (!empty($order_id)) {
-            backdrop_set_message(t('You have just used your one-time login link. Your account is now active and you are authenticated. You can now continue with checkout.'));
-            backdrop_goto('checkout/' . $order_id);
+          // Invoke user_registrationpassword_user_activated so other modules can
+          // respond to the user activation.
+          module_invoke_all('user_registrationpassword_activated_user', $account);
+
+          // Trigger a rules event.
+          // @see http://drupal.org/node/1776286
+          if (module_exists('rules')) {
+            rules_invoke_event('user_registrationpassword_activated', $account);
           }
-        }
 
-        // Display default welcome message.
-        backdrop_set_message(t('You have just used your one-time login link. Your account is now active and you are authenticated.'));
-        // And just redirect to /user if this site does not have commerce,
-        // or if the user does not have an order in the cart.
-        backdrop_goto('user');
+          // Test for Commerce checkout and redirect to checkout if exists.
+          if (module_exists('commerce_checkout_redirect') && module_exists('commerce_cart')) {
+            $order_id = commerce_cart_order_id();
+            // People need to be coming from the checkout form, and thus
+            // have an order ready, so we will forward them to the checkout
+            // form if they have an cart order set.
+            if (!empty($order_id)) {
+              backdrop_set_message(t('You have just used your one-time login link. Your account is now active and you are authenticated. You can now continue with checkout.'));
+              backdrop_goto('checkout/' . $order_id);
+            }
+          }
+
+          // Display default welcome message.
+          backdrop_set_message(t('You have just used your one-time login link. Your account is now active and you are authenticated.'));
+          // And just redirect to /user if this site does not have commerce,
+          // or if the user does not have an order in the cart.
+          backdrop_goto('user');
+        }
       }
       // Something else is wrong, redirect to the password
       // reset form to request a new activation e-mail.
