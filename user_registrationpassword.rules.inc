@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Rules event for the user_registrationpassword module.

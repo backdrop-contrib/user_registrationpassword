@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Hooks for the user_registrationpassword module.

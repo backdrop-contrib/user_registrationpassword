@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Token support for the user_registrationpassword module.

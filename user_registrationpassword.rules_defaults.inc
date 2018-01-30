@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Rules example reaction rule for the user_registrationpassword module.
@@ -17,7 +16,7 @@ function user_registrationpassword_default_rules_configuration() {
     "OWNER" : "rules",
     "REQUIRES" : [ "rules", "user_registrationpassword" ],
     "ON" : { "user_registrationpassword_activated" : [] },
-    "DO" : [ { "drupal_message" : { "message" : "Your account is now activate." } } ]
+    "DO" : [ { "backdrop_message" : { "message" : "Your account is now activate." } } ]
   }
 }';
 

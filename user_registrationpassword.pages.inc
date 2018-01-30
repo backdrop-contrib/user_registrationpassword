@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * User page callback file for the user_registrationpassword module.
@@ -27,29 +26,29 @@ function user_registrationpassword_confirm_account($form, &$form_state, $uid, $t
       // appropriate here.
       $destination = array();
       if (isset($_GET['destination'])) {
-        $destination = drupal_get_destination();
+        $destination = backdrop_get_destination();
       }
       user_logout_current_user();
       unset($_GET['destination']);
-      drupal_goto(current_path(), array('query' => drupal_get_query_parameters() + $destination));
+      backdrop_goto(current_path(), array('query' => backdrop_get_query_parameters() + $destination));
     }
     // A different user is already logged in on the computer.
     else {
       $reset_link_account = user_load($uid);
       if (!empty($reset_link_account)) {
-        drupal_set_message(t('Another user (%other_user) is already logged into the site on this computer, but you tried to use a one-time link for user %resetting_user. Please <a href="!logout">logout</a> and try using the link again.',
+        backdrop_set_message(t('Another user (%other_user) is already logged into the site on this computer, but you tried to use a one-time link for user %resetting_user. Please <a href="!logout">logout</a> and try using the link again.',
           array('%other_user' => $user->name, '%resetting_user' => $reset_link_account->name, '!logout' => url('user/logout'))), 'warning');
       }
       else {
         // Invalid one-time link specifies an unknown user.
         user_registrationpassword_set_message('linkerror', TRUE);
       }
-      drupal_goto();
+      backdrop_goto();
     }
   }
   else {
     // Time out, in seconds, until login URL expires. 24 hours = 86400 seconds.
-    $timeout = variable_get('user_registrationpassword_registration_ftll_timeout', 86400);
+    $timeout = config_get('system.core', 'password_registration_ftll_timeout');
     $current = REQUEST_TIME;
     $timestamp_created = $timestamp - $timeout;
 
@@ -59,7 +58,8 @@ function user_registrationpassword_confirm_account($form, &$form_state, $uid, $t
     // Timestamp can not be larger then current.
     if ($timestamp_created <= $current && $account = reset($users)) {
       // Check if we have to enforce expiration for activation links.
-      if (variable_get('user_registrationpassword_registration_ftll_expire', FALSE) && !$account->login && $current - $timestamp > $timeout) {
+      if (config_get('system.core', 'password_registration_ftll_expire')
+        && !$account->login && $current - $timestamp > $timeout) {
         user_registrationpassword_set_message('linkerror', TRUE);
       }
       // Else try to activate the account.
@@ -98,16 +98,16 @@ function user_registrationpassword_confirm_account($form, &$form_state, $uid, $t
           // have an order ready, so we will forward them to the checkout
           // form if they have an cart order set.
           if (!empty($order_id)) {
-            drupal_set_message(t('You have just used your one-time login link. Your account is now active and you are authenticated. You can now continue with checkout.'));
-            drupal_goto('checkout/' . $order_id);
+            backdrop_set_message(t('You have just used your one-time login link. Your account is now active and you are authenticated. You can now continue with checkout.'));
+            backdrop_goto('checkout/' . $order_id);
           }
         }
 
         // Display default welcome message.
-        drupal_set_message(t('You have just used your one-time login link. Your account is now active and you are authenticated.'));
+        backdrop_set_message(t('You have just used your one-time login link. Your account is now active and you are authenticated.'));
         // And just redirect to /user if this site does not have commerce,
         // or if the user does not have an order in the cart.
-        drupal_goto('user');
+        backdrop_goto('user');
       }
       // Something else is wrong, redirect to the password
       // reset form to request a new activation e-mail.

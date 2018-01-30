@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Mail debugger callbacks.
