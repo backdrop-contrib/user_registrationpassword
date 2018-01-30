@@ -13,24 +13,38 @@
 function user_registrationpassword_confirm_account($form, &$form_state, $uid, $timestamp, $hashed_pass) {
   global $user;
 
+  module_load_include('inc', 'user', 'user.pages');
+
   // When processing the one-time login link, we have to
   // make sure that a user isn't already logged in.
   if ($user->uid) {
-    // The existing user is already logged in.
+    // The existing user is already logged in. Log them out and reload the
+    // current page so the password reset process can continue.
     if ($user->uid == $uid) {
-      drupal_set_message(t('You are currently authenticated as user %user.', array('%user' => $user->name)) . ' ' . l(t('Change your password'), 'user/' . $user->uid . '/edit'));
-      drupal_goto('user');
+      // Preserve the current destination (if any) and ensure the redirect goes
+      // back to the current page; any custom destination set in
+      // hook_user_logout() and intended for regular logouts would not be
+      // appropriate here.
+      $destination = array();
+      if (isset($_GET['destination'])) {
+        $destination = drupal_get_destination();
+      }
+      user_logout_current_user();
+      unset($_GET['destination']);
+      drupal_goto(current_path(), array('query' => drupal_get_query_parameters() + $destination));
     }
     // A different user is already logged in on the computer.
     else {
       $reset_link_account = user_load($uid);
       if (!empty($reset_link_account)) {
-        drupal_set_message(t('Another user (%other_user) is already authenticated to the site, but you tried to use a one-time link for user %resetting_user.', array('%other_user' => $user->name, '%resetting_user' => $reset_link_account->name)) . ' ' . t('Please !logout and try using the link again.', array('!logout' => l(t('logout'), 'user/logout'))));
+        drupal_set_message(t('Another user (%other_user) is already logged into the site on this computer, but you tried to use a one-time link for user %resetting_user. Please <a href="!logout">logout</a> and try using the link again.',
+          array('%other_user' => $user->name, '%resetting_user' => $reset_link_account->name, '!logout' => url('user/logout'))), 'warning');
       }
       else {
         // Invalid one-time link specifies an unknown user.
         user_registrationpassword_set_message('linkerror', TRUE);
       }
+      drupal_goto();
     }
   }
   else {
